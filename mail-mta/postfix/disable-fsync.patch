@@ -1,0 +1,11 @@
+--- src/global/mail_stream.c.orig	2015-02-26 17:38:21.379553910 +0100
++++ src/global/mail_stream.c	2015-02-26 17:39:50.612692065 +0100
+@@ -295,7 +295,7 @@
+ #endif
+ 	|| fchmod(vstream_fileno(info->stream), 0700 | info->mode)
+ #ifdef HAS_FSYNC
+-	|| fsync(vstream_fileno(info->stream))
++	/* || fsync(vstream_fileno(info->stream)) */
+ #endif
+ 	|| (check_incoming_fs_clock
+ 	    && fstat(vstream_fileno(info->stream), &st) < 0)
