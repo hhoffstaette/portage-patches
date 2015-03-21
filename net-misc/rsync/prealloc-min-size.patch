@@ -1,0 +1,11 @@
+--- receiver.c~	2014-06-08 19:42:14.000000000 +0200
++++ receiver.c	2015-03-20 14:58:10.627150563 +0100
+@@ -245,7 +245,7 @@
+ 	OFF_T preallocated_len = 0;
+ #endif
+ 
+-	if (preallocate_files && fd != -1 && total_size > 0 && (!inplace || total_size > size_r)) {
++	if (preallocate_files && fd != -1 && total_size >= 33554432 && (!inplace || total_size > size_r)) {
+ 		/* Try to preallocate enough space for file's eventual length.  Can
+ 		 * reduce fragmentation on filesystems like ext4, xfs, and NTFS. */
+ 		if (do_fallocate(fd, 0, total_size) == 0) {
