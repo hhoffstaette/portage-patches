@@ -1,5 +1,16 @@
---- src/global/mail_stream.c.orig	2015-02-26 17:38:21.379553910 +0100
-+++ src/global/mail_stream.c	2015-02-26 17:39:50.612692065 +0100
+--- ./src/util/edit_file.c~	2014-12-07 02:35:33.000000000 +0100
++++ ./src/util/edit_file.c	2016-02-26 13:29:24.933918645 +0100
+@@ -338,7 +338,7 @@
+     if (vstream_fflush(fp) < 0
+ 	|| fchmod(fd, ep->final_mode) < 0
+ #ifdef HAS_FSYNC
+-	|| fsync(fd) < 0
++	/* || fsync(fd) < 0 */
+ #endif
+ 	|| rename(ep->tmp_path, ep->final_path) < 0) {
+ 	saved_errno = errno;
+--- ./src/global/mail_stream.c~	2014-12-25 17:47:17.000000000 +0100
++++ ./src/global/mail_stream.c	2016-02-26 13:28:22.730707072 +0100
 @@ -295,7 +295,7 @@
  #endif
  	|| fchmod(vstream_fileno(info->stream), 0700 | info->mode)
@@ -9,3 +20,16 @@
  #endif
  	|| (check_incoming_fs_clock
  	    && fstat(vstream_fileno(info->stream), &st) < 0)
+--- ./src/global/mail_copy.c~	2012-01-25 01:41:08.000000000 +0100
++++ ./src/global/mail_copy.c	2016-02-26 13:45:24.485348791 +0100
+@@ -265,8 +265,8 @@
+     read_error = vstream_ferror(src);
+     write_error = vstream_fflush(dst);
+ #ifdef HAS_FSYNC
+-    if ((flags & MAIL_COPY_TOFILE) != 0)
+-	write_error |= fsync(vstream_fileno(dst));
++    /* if ((flags & MAIL_COPY_TOFILE) != 0) */
++	/* write_error |= fsync(vstream_fileno(dst)); */
+ #endif
+     if (var_fault_inj_code == 2) {
+ 	read_error = 1;
