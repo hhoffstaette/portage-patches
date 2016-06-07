@@ -1,0 +1,13 @@
+--- nocache/nocache.c~	2016-06-07 16:24:58.000000000 +0200
++++ nocache/nocache.c	2016-06-07 16:37:04.557325679 +0200
+@@ -450,7 +450,9 @@
+     if(fds[fd].fd == -1)
+         goto out;
+ 
+-    sync_if_writable(fd);
++    if (fds[fd].size >= (8*1024*1024)) {
++        sync_if_writable(fd);
++    }
+ 
+     if(fstat(fd, &st) == -1)
+         goto out;
