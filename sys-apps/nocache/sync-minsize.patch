@@ -1,13 +1,30 @@
---- nocache/nocache.c~	2016-06-07 16:24:58.000000000 +0200
-+++ nocache/nocache.c	2016-06-07 16:37:04.557325679 +0200
-@@ -450,7 +450,9 @@
-     if(fds[fd].fd == -1)
-         goto out;
+diff -rup nocache-1.0/fcntl_helpers.c nocache-1.0.minsize/fcntl_helpers.c
+--- nocache-1.0/fcntl_helpers.c	2016-05-17 14:55:10.000000000 +0200
++++ nocache-1.0.minsize/fcntl_helpers.c	2016-06-10 21:40:31.445328019 +0200
+@@ -1,6 +1,7 @@
+ #include <fcntl.h>
+ #include <unistd.h>
+ #include <errno.h>
++#include <sys/stat.h>
  
--    sync_if_writable(fd);
-+    if (fds[fd].size >= (8*1024*1024)) {
-+        sync_if_writable(fd);
+ /* Since open() and close() are re-defined in nocache.c, it's not
+  * possible to include <fcntl.h> there. So we do it here. */
+@@ -26,11 +27,16 @@ int valid_fd(int fd)
+ 
+ void sync_if_writable(int fd)
+ {
++    struct stat st;
+     int r;
++
+     if((r = fcntl(fd, F_GETFL)) == -1)
+         return;
+-    if((r & O_ACCMODE) != O_RDONLY)
+-        fdatasync(fd);
++
++    if((r & O_ACCMODE) != O_RDONLY) {
++        if ((fstat(fd, &st) == 0) && (st.st_size >= (8*1024*1024)))
++            fdatasync(fd);
 +    }
+ }
  
-     if(fstat(fd, &st) == -1)
-         goto out;
+ int fcntl_dupfd(int fd, int arg)
