@@ -1,18 +1,11 @@
 --- rsync.h~	2014-04-13 19:36:59.000000000 +0200
 +++ rsync.h	2014-09-09 12:07:41.143609054 +0200
-@@ -131,11 +131,11 @@
- 
- #define RSYNC_PORT 873
- 
--#define SPARSE_WRITE_SIZE (1024)
--#define WRITE_SIZE (32*1024)
--#define CHUNK_SIZE (32*1024)
-+#define SPARSE_WRITE_SIZE (256*1024)
-+#define WRITE_SIZE (256*1024)
-+#define CHUNK_SIZE (256*1024)
+@@ -135,7 +135,7 @@
+ #define WRITE_SIZE (32*1024)
+ #define CHUNK_SIZE (32*1024)
  #define MAX_MAP_SIZE (256*1024)
 -#define IO_BUFFER_SIZE (32*1024)
-+#define IO_BUFFER_SIZE (512*1024)
++#define IO_BUFFER_SIZE (256*1024)
  #define MAX_BLOCK_SIZE ((int32)1 << 17)
  
  /* For compatibility with older rsyncs */
