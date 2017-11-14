@@ -1,6 +1,7 @@
---- receiver.c~	2014-06-08 19:42:14.000000000 +0200
-+++ receiver.c	2015-03-20 14:58:10.627150563 +0100
-@@ -245,7 +245,7 @@
+diff -rup rsync-3.1.2.orig/receiver.c rsync-3.1.2/receiver.c
+--- rsync-3.1.2.orig/receiver.c	2015-09-07 19:07:17.000000000 +0200
++++ rsync-3.1.2/receiver.c	2017-11-15 00:17:09.555937716 +0100
+@@ -245,7 +245,7 @@ static int receive_data(int f_in, char *
  	OFF_T preallocated_len = 0;
  #endif
  
