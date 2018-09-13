@@ -1,0 +1,11 @@
+--- openssh-7.8p1/sshconnect2.c~	2018-08-23 07:41:42.000000000 +0200
++++ openssh-7.8p1/sshconnect2.c	2018-09-13 16:28:55.282302383 +0200
+@@ -1270,8 +1270,6 @@ sign_and_send_pubkey(struct ssh *ssh, Au
+ 				loc = "agent ";
+ 			else if ((sign_id->key->flags & SSHKEY_FLAG_EXT) != 0)
+ 				loc = "token ";
+-			logit("%skey %s %s returned incorrect signature type",
+-			    loc, sshkey_type(id->key), fp);
+ 			continue;
+ 		}
+ 		error("%s: signing failed: %s", __func__, ssh_err(r));
