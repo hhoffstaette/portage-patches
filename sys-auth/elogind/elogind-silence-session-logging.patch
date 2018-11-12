@@ -1,0 +1,35 @@
+
+Silence annoying session start/end logging.
+
+diff -rup elogind-239.1/src/login/logind-session.c elogind-239.1-silent/src/login/logind-session.c
+--- elogind-239.1/src/login/logind-session.c	2018-10-17 19:50:46.000000000 +0200
++++ elogind-239.1-silent/src/login/logind-session.c	2018-11-12 14:42:12.921056874 +0100
+@@ -639,13 +639,6 @@ int session_start(Session *s, sd_bus_mes
+         if (r < 0)
+                 return r;
+ 
+-        log_struct(s->class == SESSION_BACKGROUND ? LOG_DEBUG : LOG_INFO,
+-                   "MESSAGE_ID=" SD_MESSAGE_SESSION_START_STR,
+-                   "SESSION_ID=%s", s->id,
+-                   "USER_ID=%s", s->user->name,
+-                   "LEADER="PID_FMT, s->leader,
+-                   LOG_MESSAGE("New session %s of user %s.", s->id, s->user->name));
+-
+         if (!dual_timestamp_is_set(&s->timestamp))
+                 dual_timestamp_get(&s->timestamp);
+ 
+@@ -778,14 +771,6 @@ int session_finalize(Session *s) {
+         if (!s->user)
+                 return -ESTALE;
+ 
+-        if (s->started)
+-                log_struct(s->class == SESSION_BACKGROUND ? LOG_DEBUG : LOG_INFO,
+-                           "MESSAGE_ID=" SD_MESSAGE_SESSION_STOP_STR,
+-                           "SESSION_ID=%s", s->id,
+-                           "USER_ID=%s", s->user->name,
+-                           "LEADER="PID_FMT, s->leader,
+-                           LOG_MESSAGE("Removed session %s.", s->id));
+-
+         s->timer_event_source = sd_event_source_unref(s->timer_event_source);
+ 
+         if (s->seat)
