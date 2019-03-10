@@ -1,0 +1,18 @@
+From 23a8d5ffbbe58761b89f590f0735abccd69a3681 Mon Sep 17 00:00:00 2001
+From: Stephan Bergmann <sbergman@redhat.com>
+Date: Fri, 11 Jan 2019 17:40:17 +0100
+Subject: [PATCH] Upgrade external/boost to Boost 1.69.0
+
+[HH: relevant part only]
+
+diff --git a/sfx2/source/appl/shutdownicon.cxx b/sfx2/source/appl/shutdownicon.cxx
+index a24e254..65c73de 100644
+--- a/sfx2/source/appl/shutdownicon.cxx
++++ b/sfx2/source/appl/shutdownicon.cxx
+@@ -144,7 +144,7 @@
+ #endif // ENABLE_QUICKSTART_APPLET
+     }
+     assert(!boost::logic::indeterminate(loaded));
+-    return loaded;
++    return bool(loaded);
+ }
