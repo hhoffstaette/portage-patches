@@ -1,22 +1,21 @@
 
 Silence annoying session logging.
 
-diff -rup elogind-239.1/src/login/logind-dbus.c elogind-239.1-silent/src/login/logind-dbus.c
---- elogind-239.1/src/login/logind-dbus.c	2018-10-17 19:50:46.000000000 +0200
-+++ elogind-239.1-silent/src/login/logind-dbus.c	2018-11-16 19:19:40.890552583 +0100
-@@ -759,7 +759,7 @@ static int method_create_session(sd_bus_
+diff -rup elogind-241.1/src/login/logind-dbus.c elogind-241.1-silent/src/login/logind-dbus.c
+--- elogind-241.1/src/login/logind-dbus.c	2019-03-10 15:06:33.000000000 +0100
++++ elogind-241.1-silent/src/login/logind-dbus.c	2019-03-16 10:37:40.556200773 +0100
+@@ -765,7 +765,6 @@ static int method_create_session(sd_bus_
                   * the audit data and let's better register a new
                   * ID */
                  if (hashmap_get(m->sessions, id)) {
 -                        log_warning("Existing logind session ID %s used by new audit session, ignoring.", id);
-+                        /* log_warning("Existing logind session ID %s used by new audit session, ignoring.", id); */
                          audit_id = AUDIT_SESSION_INVALID;
                          id = mfree(id);
                  }
-diff -rup elogind-239.1/src/login/logind-session.c elogind-239.1-silent/src/login/logind-session.c
---- elogind-239.1/src/login/logind-session.c	2018-10-17 19:50:46.000000000 +0200
-+++ elogind-239.1-silent/src/login/logind-session.c	2018-11-16 19:20:18.090863797 +0100
-@@ -639,13 +639,6 @@ int session_start(Session *s, sd_bus_mes
+diff -rup elogind-241.1/src/login/logind-session.c elogind-241.1-silent/src/login/logind-session.c
+--- elogind-241.1/src/login/logind-session.c	2019-03-10 15:06:33.000000000 +0100
++++ elogind-241.1-silent/src/login/logind-session.c	2019-03-16 10:37:40.559534135 +0100
+@@ -741,13 +741,6 @@ int session_start(Session *s, sd_bus_mes
          if (r < 0)
                  return r;
  
@@ -30,7 +29,7 @@ diff -rup elogind-239.1/src/login/logind-session.c elogind-239.1-silent/src/logi
          if (!dual_timestamp_is_set(&s->timestamp))
                  dual_timestamp_get(&s->timestamp);
  
-@@ -778,14 +771,6 @@ int session_finalize(Session *s) {
+@@ -891,14 +884,6 @@ int session_finalize(Session *s) {
          if (!s->user)
                  return -ESTALE;
  
@@ -41,7 +40,7 @@ diff -rup elogind-239.1/src/login/logind-session.c elogind-239.1-silent/src/logi
 -                           "USER_ID=%s", s->user->name,
 -                           "LEADER="PID_FMT, s->leader,
 -                           LOG_MESSAGE("Removed session %s.", s->id));
--
+-                log_debug_elogind("Session %s not started, finalizing...", s->id);
+ 
          s->timer_event_source = sd_event_source_unref(s->timer_event_source);
  
-         if (s->seat)
