@@ -5,9 +5,9 @@ diff -rup elogind-241.1/src/login/logind-dbus.c elogind-241.1-silent/src/login/l
 --- elogind-241.1/src/login/logind-dbus.c	2019-03-10 15:06:33.000000000 +0100
 +++ elogind-241.1-silent/src/login/logind-dbus.c	2019-03-16 10:37:40.556200773 +0100
 @@ -765,7 +765,6 @@ static int method_create_session(sd_bus_
-                  * the audit data and let's better register a new
-                  * ID */
-                 if (hashmap_get(m->sessions, id)) {
+                 /* Wut? There's already a session by this name and we didn't find it above? Weird, then let's
+                  * not trust the audit data and let's better register a new ID */
+                 if (hashmap_contains(m->sessions, id)) {
 -                        log_warning("Existing logind session ID %s used by new audit session, ignoring.", id);
                          audit_id = AUDIT_SESSION_INVALID;
                          id = mfree(id);
