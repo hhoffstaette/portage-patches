@@ -1,0 +1,30 @@
+commit 11c1278648336bb87c5161ef455530f8de9fefe4
+Author: Holger Hoffstätte <holger@applied-asynchrony.com>
+Date:   Sun Apr 12 13:47:44 2020 +0200
+
+    Add timestamps to logfile output when not using syslog.
+    
+    Signed-off-by: Holger Hoffstätte <holger@applied-asynchrony.com>
+
+diff --git a/report.c b/report.c
+index 9269912d..9a48baad 100644
+--- a/report.c
++++ b/report.c
+@@ -76,8 +76,16 @@ void report(FILE *errfp, const char *message, ...)
+ 	    fputc( '\n', errfp );
+ 	    ++message;
+ 	}
+-	if (!partial_suppress_tag)
++	if (!partial_suppress_tag) {
++		time_t timer;
++		char buffer[26];
++		struct tm* tm_info;
++		timer = time(NULL);
++		tm_info = localtime(&timer);
++		strftime (buffer, 26, "%Y-%m-%d %H:%M:%S", tm_info);
++		fprintf (errfp, "%s ", buffer);
+ 		fprintf (errfp, "%s: ", program_name);
++	}
+ 	partial_suppress_tag = 0;
+ 
+ 	va_start (args, message);
