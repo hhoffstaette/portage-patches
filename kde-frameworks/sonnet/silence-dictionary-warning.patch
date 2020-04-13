@@ -1,0 +1,11 @@
+diff -rup a/src/core/loader.cpp b/src/core/loader.cpp
+--- a/src/core/loader.cpp	2020-01-04 11:16:55.000000000 +0100
++++ b/src/core/loader.cpp	2020-02-05 17:52:45.193771520 +0100
+@@ -92,7 +92,6 @@ SpellerPlugin *Loader::createSpeller(con
+ 
+     auto clientsItr = d->languageClients.constFind(plang);
+     if (clientsItr == d->languageClients.constEnd()) {
+-        qCWarning(SONNET_LOG_CORE) << "No language dictionaries for the language:" << plang;
+         emit loadingDictionaryFailed(plang);
+         return nullptr;
+     }
