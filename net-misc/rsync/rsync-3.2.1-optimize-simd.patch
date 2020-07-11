@@ -1,0 +1,19 @@
+commit 73fa162b660028dd9999e5ccdc1c1ae02c3b0b26
+Author: Holger Hoffstätte <holger@applied-asynchrony.com>
+Date:   Thu Jul 2 23:16:34 2020 +0200
+
+    Always build C++ SIMD checksum routines with -O3
+
+diff --git a/Makefile.in b/Makefile.in
+index 672fcc47..36840e83 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -133,7 +133,7 @@ rounding.h: rounding.c rsync.h proto.h
+ 	@rm -f rounding.out
+ 
+ simd-checksum-x86_64.o: simd-checksum-x86_64.cpp
+-	@$(srcdir)/cmdormsg disable-simd $(CXX) -I. $(CXXFLAGS) $(CPPFLAGS) -c -o $@ $(srcdir)/simd-checksum-x86_64.cpp
++	@$(srcdir)/cmdormsg disable-simd $(CXX) -I. $(CXXFLAGS) $(CPPFLAGS) -O3 -c -o $@ $(srcdir)/simd-checksum-x86_64.cpp
+ 
+ lib/md5-asm-x86_64.o: lib/md5-asm-x86_64.S config.h lib/md-defines.h
+ 	@$(srcdir)/cmdormsg disable-asm $(CC) -I. @NOEXECSTACK@ -c -o $@ $(srcdir)/lib/md5-asm-x86_64.S
