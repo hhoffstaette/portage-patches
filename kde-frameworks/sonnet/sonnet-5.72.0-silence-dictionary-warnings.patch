@@ -1,0 +1,29 @@
+--- a/src/core/loader.cpp~	2020-07-04 15:27:15.000000000 +0200
++++ b/src/core/loader.cpp	2020-07-11 19:50:48.605189494 +0200
+@@ -79,10 +79,8 @@ SpellerPlugin *Loader::createSpeller(con
+     auto clientsItr = d->languageClients.constFind(plang);
+     if (clientsItr == d->languageClients.constEnd()) {
+         if (language.isEmpty()) {
+-            qCWarning(SONNET_LOG_CORE) << "No language dictionaries for the language:" << plang << "trying to load en_US as default";
+             return createSpeller(QStringLiteral("en_US"), clientName);
+         }
+-        qCWarning(SONNET_LOG_CORE) << "No language dictionaries for the language:" << plang;
+         emit loadingDictionaryFailed(plang);
+         return nullptr;
+     }
+@@ -97,7 +95,6 @@ SpellerPlugin *Loader::createSpeller(con
+             bool unknown = !std::any_of(lClients.constBegin(), lClients.constEnd(), [backend] (const Client *client) {
+                     return client->name() == backend; });
+             if (unknown) {
+-                qCWarning(SONNET_LOG_CORE) << "Default client" << backend << "doesn't support language:" << plang;
+                 backend = QString();
+             }
+         }
+@@ -121,7 +118,6 @@ SpellerPlugin *Loader::createSpeller(con
+         }
+     }
+ 
+-    qCWarning(SONNET_LOG_CORE) << "The default client" << backend << "has no language dictionaries for the language:" << plang;
+     return nullptr;
+ }
+ 
