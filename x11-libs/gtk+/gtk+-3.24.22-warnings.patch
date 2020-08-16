@@ -1,0 +1,63 @@
+diff -rup gtk+-3.24.22/gtk/gtkboxgadget.c gtk+-3.24.22-nowarnings/gtk/gtkboxgadget.c
+--- gtk+-3.24.22/gtk/gtkboxgadget.c	2020-06-11 04:45:39.000000000 +0200
++++ gtk+-3.24.22-nowarnings/gtk/gtkboxgadget.c	2020-08-16 22:57:19.886874136 +0200
+@@ -170,7 +170,6 @@ gtk_box_gadget_distribute (GtkBoxGadget
+ 
+   if G_UNLIKELY (size < 0)
+     {
+-      g_critical ("%s: assertion 'size >= 0' failed in %s", G_STRFUNC, G_OBJECT_TYPE_NAME (gtk_css_gadget_get_owner (GTK_CSS_GADGET (gadget))));
+       return;
+     }
+ 
+diff -rup gtk+-3.24.22/gtk/gtkcssgadget.c gtk+-3.24.22-nowarnings/gtk/gtkcssgadget.c
+--- gtk+-3.24.22/gtk/gtkcssgadget.c	2020-06-11 04:45:39.000000000 +0200
++++ gtk+-3.24.22-nowarnings/gtk/gtkcssgadget.c	2020-08-16 22:53:32.994748756 +0200
+@@ -665,13 +665,6 @@ gtk_css_gadget_get_preferred_size (GtkCs
+ 
+   if (for_size > -1)
+     {
+-      if (for_size < min_for_size)
+-        g_warning ("for_size smaller than min-size (%d < %d) "
+-                   "while measuring gadget (node %s, owner %s)",
+-                   for_size, min_for_size,
+-                   gtk_css_node_get_name (gtk_css_gadget_get_node (gadget)),
+-                   G_OBJECT_TYPE_NAME (gtk_css_gadget_get_owner (gadget)));
+-
+       for_size = MAX (0, for_size - extra_opposite);
+     }
+ 
+@@ -767,23 +760,11 @@ gtk_css_gadget_allocate (GtkCssGadget
+ 
+   if (content_allocation.width < 0)
+     {
+-      g_warning ("Negative content width %d (allocation %d, extents %dx%d) "
+-                 "while allocating gadget (node %s, owner %s)",
+-                 content_allocation.width, allocation->width,
+-                 extents.left, extents.right,
+-                 gtk_css_node_get_name (gtk_css_gadget_get_node (gadget)),
+-                 G_OBJECT_TYPE_NAME (gtk_css_gadget_get_owner (gadget)));
+       content_allocation.width = 0;
+     }
+ 
+   if (content_allocation.height < 0)
+     {
+-      g_warning ("Negative content height %d (allocation %d, extents %dx%d) "
+-                 "while allocating gadget (node %s, owner %s)",
+-                 content_allocation.height, allocation->height,
+-                 extents.top, extents.bottom,
+-                 gtk_css_node_get_name (gtk_css_gadget_get_node (gadget)),
+-                 G_OBJECT_TYPE_NAME (gtk_css_gadget_get_owner (gadget)));
+       content_allocation.height = 0;
+     }
+ 
+@@ -845,10 +826,6 @@ gtk_css_gadget_draw (GtkCssGadget *gadge
+ 
+   if (width < 0 || height < 0)
+     {
+-      g_warning ("Drawing a gadget with negative dimensions. "
+-                 "Did you forget to allocate a size? (node %s owner %s)",
+-                 gtk_css_node_get_name (gtk_css_gadget_get_node (gadget)),
+-                 G_OBJECT_TYPE_NAME (gtk_css_gadget_get_owner (gadget)));
+       x = 0;
+       y = 0;
+       width = gtk_widget_get_allocated_width (priv->owner);
