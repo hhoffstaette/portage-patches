@@ -1,6 +1,6 @@
-diff -rup gtk+-3.24.22/gtk/gtkboxgadget.c gtk+-3.24.22-nowarnings/gtk/gtkboxgadget.c
+diff -rup gtk+-3.24.22/gtk/gtkboxgadget.c gtk+-3.24.22-nowarn/gtk/gtkboxgadget.c
 --- gtk+-3.24.22/gtk/gtkboxgadget.c	2020-06-11 04:45:39.000000000 +0200
-+++ gtk+-3.24.22-nowarnings/gtk/gtkboxgadget.c	2020-08-16 22:57:19.886874136 +0200
++++ gtk+-3.24.22-nowarn/gtk/gtkboxgadget.c	2020-08-17 21:01:54.939897660 +0200
 @@ -170,7 +170,6 @@ gtk_box_gadget_distribute (GtkBoxGadget
  
    if G_UNLIKELY (size < 0)
@@ -9,9 +9,9 @@ diff -rup gtk+-3.24.22/gtk/gtkboxgadget.c gtk+-3.24.22-nowarnings/gtk/gtkboxgadg
        return;
      }
  
-diff -rup gtk+-3.24.22/gtk/gtkcssgadget.c gtk+-3.24.22-nowarnings/gtk/gtkcssgadget.c
+diff -rup gtk+-3.24.22/gtk/gtkcssgadget.c gtk+-3.24.22-nowarn/gtk/gtkcssgadget.c
 --- gtk+-3.24.22/gtk/gtkcssgadget.c	2020-06-11 04:45:39.000000000 +0200
-+++ gtk+-3.24.22-nowarnings/gtk/gtkcssgadget.c	2020-08-16 22:53:32.994748756 +0200
++++ gtk+-3.24.22-nowarn/gtk/gtkcssgadget.c	2020-08-17 21:01:54.939897660 +0200
 @@ -665,13 +665,6 @@ gtk_css_gadget_get_preferred_size (GtkCs
  
    if (for_size > -1)
@@ -61,3 +61,42 @@ diff -rup gtk+-3.24.22/gtk/gtkcssgadget.c gtk+-3.24.22-nowarnings/gtk/gtkcssgadg
        x = 0;
        y = 0;
        width = gtk_widget_get_allocated_width (priv->owner);
+diff -rup gtk+-3.24.22/gtk/gtkcssprovider.c gtk+-3.24.22-nowarn/gtk/gtkcssprovider.c
+--- gtk+-3.24.22/gtk/gtkcssprovider.c	2020-06-11 04:45:39.000000000 +0200
++++ gtk+-3.24.22-nowarn/gtk/gtkcssprovider.c	2020-08-17 21:04:57.824941940 +0200
+@@ -176,25 +176,6 @@ gtk_css_provider_parsing_error (GtkCssPr
+                                 GtkCssSection   *section,
+                                 const GError    *error)
+ {
+-  /* Only emit a warning when we have no error handlers. This is our
+-   * default handlers. And in this case erroneous CSS files are a bug
+-   * and should be fixed.
+-   * Note that these warnings can also be triggered by a broken theme
+-   * that people installed from some weird location on the internets.
+-   */
+-  if (!g_signal_has_handler_pending (provider,
+-                                     css_provider_signals[PARSING_ERROR],
+-                                     0,
+-                                     TRUE))
+-    {
+-      char *s = _gtk_css_section_to_string (section);
+-
+-      g_warning ("Theme parsing error: %s: %s",
+-                 s,
+-                 error->message);
+-
+-      g_free (s);
+-    }
+ }
+ 
+ /* This is exported privately for use in GtkInspector.
+@@ -980,9 +961,6 @@ gtk_css_provider_propagate_error (GtkCss
+   /* don't fail for deprecations */
+   if (g_error_matches (error, GTK_CSS_PROVIDER_ERROR, GTK_CSS_PROVIDER_ERROR_DEPRECATED))
+     {
+-      s = _gtk_css_section_to_string (section);
+-      g_warning ("Theme parsing error: %s: %s", s, error->message);
+-      g_free (s);
+       return;
+     }
+ 
