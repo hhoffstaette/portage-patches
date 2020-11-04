@@ -1,0 +1,10 @@
+--- openssh-8.3p1/sshconnect2.c~	2020-09-01 15:40:33.000000000 +0200
++++ openssh-8.3p1/sshconnect2.c	2020-09-01 15:44:16.327838559 +0200
+@@ -460,7 +460,6 @@ ssh_userauth2(struct ssh *ssh, const cha
+ 			myproposal[PROPOSAL_ENC_ALGS_CTOS] = "none";
+ 			kex_prop2buf(ssh->kex->my, myproposal);
+ 			packet_request_rekeying();
+-			fprintf(stderr, "WARNING: ENABLED NONE CIPHER\n");
+ 		} else {
+ 			/* requested NONE cipher when in a tty */
+ 			debug("Cannot switch to NONE cipher with tty allocated");
