@@ -1,10 +1,18 @@
+From 43a587f49671d95e03462cf5b0e2b4af0e38d6cf Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Holger=20Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>
+Date: Fri, 8 Jan 2021 18:31:04 +0100
+Subject: [PATCH] Silence unnecessary log spam on session start/stop
 
-Silence annoying session logging.
+---
+ src/login/logind-dbus.c    |  1 -
+ src/login/logind-session.c | 16 ----------------
+ 2 files changed, 17 deletions(-)
 
-diff -rup elogind-241.1/src/login/logind-dbus.c elogind-241.1-silent/src/login/logind-dbus.c
---- elogind-241.1/src/login/logind-dbus.c	2019-03-10 15:06:33.000000000 +0100
-+++ elogind-241.1-silent/src/login/logind-dbus.c	2019-03-16 10:37:40.556200773 +0100
-@@ -765,7 +765,6 @@ static int method_create_session(sd_bus_
+diff --git a/src/login/logind-dbus.c b/src/login/logind-dbus.c
+index b5aee6691..56507bf72 100644
+--- a/src/login/logind-dbus.c
++++ b/src/login/logind-dbus.c
+@@ -854,7 +854,6 @@ static int method_create_session(sd_bus_message *message, void *userdata, sd_bus
                  /* Wut? There's already a session by this name and we didn't find it above? Weird, then let's
                   * not trust the audit data and let's better register a new ID */
                  if (hashmap_contains(m->sessions, id)) {
@@ -12,24 +20,25 @@ diff -rup elogind-241.1/src/login/logind-dbus.c elogind-241.1-silent/src/login/l
                          audit_id = AUDIT_SESSION_INVALID;
                          id = mfree(id);
                  }
-diff -rup elogind-241.1/src/login/logind-session.c elogind-241.1-silent/src/login/logind-session.c
---- elogind-241.1/src/login/logind-session.c	2019-03-10 15:06:33.000000000 +0100
-+++ elogind-241.1-silent/src/login/logind-session.c	2019-03-16 10:37:40.559534135 +0100
-@@ -741,13 +741,6 @@ int session_start(Session *s, sd_bus_mes
+diff --git a/src/login/logind-session.c b/src/login/logind-session.c
+index 0fe1523eb..e330f4c84 100644
+--- a/src/login/logind-session.c
++++ b/src/login/logind-session.c
+@@ -767,13 +767,6 @@ int session_start(Session *s, sd_bus_message *properties, sd_bus_error *error) {
          if (r < 0)
                  return r;
  
 -        log_struct(s->class == SESSION_BACKGROUND ? LOG_DEBUG : LOG_INFO,
 -                   "MESSAGE_ID=" SD_MESSAGE_SESSION_START_STR,
 -                   "SESSION_ID=%s", s->id,
--                   "USER_ID=%s", s->user->name,
+-                   "USER_ID=%s", s->user->user_record->user_name,
 -                   "LEADER="PID_FMT, s->leader,
--                   LOG_MESSAGE("New session %s of user %s.", s->id, s->user->name));
+-                   LOG_MESSAGE("New session %s of user %s.", s->id, s->user->user_record->user_name));
 -
          if (!dual_timestamp_is_set(&s->timestamp))
                  dual_timestamp_get(&s->timestamp);
  
-@@ -891,14 +884,6 @@ int session_finalize(Session *s) {
+@@ -920,15 +913,6 @@ int session_finalize(Session *s) {
          if (!s->user)
                  return -ESTALE;
  
@@ -37,10 +46,14 @@ diff -rup elogind-241.1/src/login/logind-session.c elogind-241.1-silent/src/logi
 -                log_struct(s->class == SESSION_BACKGROUND ? LOG_DEBUG : LOG_INFO,
 -                           "MESSAGE_ID=" SD_MESSAGE_SESSION_STOP_STR,
 -                           "SESSION_ID=%s", s->id,
--                           "USER_ID=%s", s->user->name,
+-                           "USER_ID=%s", s->user->user_record->user_name,
 -                           "LEADER="PID_FMT, s->leader,
 -                           LOG_MESSAGE("Removed session %s.", s->id));
 -                log_debug_elogind("Session %s not started, finalizing...", s->id);
- 
+-
          s->timer_event_source = sd_event_source_unref(s->timer_event_source);
  
+         if (s->seat)
+-- 
+2.30.0
+
