@@ -1,5 +1,6 @@
---- a/src/core/loader.cpp~	2020-07-04 15:27:15.000000000 +0200
-+++ b/src/core/loader.cpp	2020-07-11 19:50:48.605189494 +0200
+diff -rup sonnet-5.79.0/src/core/loader.cpp sonnet-5.79.0-nowarn/src/core/loader.cpp
+--- sonnet-5.79.0/src/core/loader.cpp	2021-02-06 19:29:42.000000000 +0100
++++ sonnet-5.79.0-nowarn/src/core/loader.cpp	2021-02-13 14:45:56.572682946 +0100
 @@ -79,10 +79,8 @@ SpellerPlugin *Loader::createSpeller(con
      auto clientsItr = d->languageClients.constFind(plang);
      if (clientsItr == d->languageClients.constEnd()) {
@@ -8,7 +9,7 @@
              return createSpeller(QStringLiteral("en_US"), clientName);
          }
 -        qCWarning(SONNET_LOG_CORE) << "No language dictionaries for the language:" << plang;
-         emit loadingDictionaryFailed(plang);
+         Q_EMIT loadingDictionaryFailed(plang);
          return nullptr;
      }
 @@ -97,7 +95,6 @@ SpellerPlugin *Loader::createSpeller(con
@@ -27,3 +28,11 @@
      return nullptr;
  }
  
+@@ -293,7 +289,6 @@ void Loader::loadPlugins()
+         }
+     }
+     if (plugins == 0) {
+-        qCWarning(SONNET_LOG_CORE) << "Sonnet: No speller backends available!";
+     }
+ #else
+ #ifdef Q_OS_MACOS
