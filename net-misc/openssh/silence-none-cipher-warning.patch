@@ -1,10 +1,11 @@
---- openssh-8.3p1/sshconnect2.c~	2020-09-01 15:40:33.000000000 +0200
-+++ openssh-8.3p1/sshconnect2.c	2020-09-01 15:44:16.327838559 +0200
-@@ -460,7 +460,6 @@ ssh_userauth2(struct ssh *ssh, const cha
+diff -rup openssh-8.5p1/sshconnect2.c openssh-8.5p1-silence/sshconnect2.c
+--- openssh-8.5p1/sshconnect2.c	2021-03-04 09:29:44.850959279 +0100
++++ openssh-8.5p1-silence/sshconnect2.c	2021-03-04 09:31:43.453391045 +0100
+@@ -512,7 +512,6 @@ ssh_userauth2(struct ssh *ssh, const cha
+ 			memcpy(&myproposal, &myproposal_default, sizeof(myproposal));
+ 			myproposal[PROPOSAL_ENC_ALGS_STOC] = "none";
  			myproposal[PROPOSAL_ENC_ALGS_CTOS] = "none";
- 			kex_prop2buf(ssh->kex->my, myproposal);
- 			packet_request_rekeying();
--			fprintf(stderr, "WARNING: ENABLED NONE CIPHER\n");
- 		} else {
- 			/* requested NONE cipher when in a tty */
- 			debug("Cannot switch to NONE cipher with tty allocated");
+-			fprintf(stderr, "WARNING: ENABLED NONE CIPHER!!!\n");
+ 			/* NONEMAC can only be used in context of the NONE CIPHER */
+ 			if (options.nonemac_enabled == 1) {
+ 				myproposal[PROPOSAL_MAC_ALGS_STOC] = "none";
