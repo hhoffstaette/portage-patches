@@ -1,7 +1,6 @@
-diff -rup sonnet-5.79.0/src/core/loader.cpp sonnet-5.79.0-nowarn/src/core/loader.cpp
---- sonnet-5.79.0/src/core/loader.cpp	2021-02-06 19:29:42.000000000 +0100
-+++ sonnet-5.79.0-nowarn/src/core/loader.cpp	2021-02-13 14:45:56.572682946 +0100
-@@ -79,10 +79,8 @@ SpellerPlugin *Loader::createSpeller(con
+--- sonnet-5.89.0/src/core/loader.cpp	2021-12-04 19:55:29.000000000 +0100
++++ sonnet-5.89.0-nowarn/src/core/loader.cpp	2021-12-13 01:33:35.532745595 +0100
+@@ -83,10 +83,8 @@ SpellerPlugin *Loader::createSpeller(con
      auto clientsItr = d->languageClients.constFind(plang);
      if (clientsItr == d->languageClients.constEnd()) {
          if (language.isEmpty()) {
@@ -12,15 +11,15 @@ diff -rup sonnet-5.79.0/src/core/loader.cpp sonnet-5.79.0-nowarn/src/core/loader
          Q_EMIT loadingDictionaryFailed(plang);
          return nullptr;
      }
-@@ -97,7 +95,6 @@ SpellerPlugin *Loader::createSpeller(con
-             bool unknown = !std::any_of(lClients.constBegin(), lClients.constEnd(), [backend] (const Client *client) {
-                     return client->name() == backend; });
+@@ -102,7 +100,6 @@ SpellerPlugin *Loader::createSpeller(con
+                 return client->name() == backend;
+             });
              if (unknown) {
 -                qCWarning(SONNET_LOG_CORE) << "Default client" << backend << "doesn't support language:" << plang;
                  backend = QString();
              }
          }
-@@ -121,7 +118,6 @@ SpellerPlugin *Loader::createSpeller(con
+@@ -126,7 +123,6 @@ SpellerPlugin *Loader::createSpeller(con
          }
      }
  
@@ -28,11 +27,14 @@ diff -rup sonnet-5.79.0/src/core/loader.cpp sonnet-5.79.0-nowarn/src/core/loader
      return nullptr;
  }
  
-@@ -293,7 +289,6 @@ void Loader::loadPlugins()
+@@ -281,10 +277,6 @@ void Loader::loadPlugins()
+             loadPlugin(dir.absoluteFilePath(fileName));
          }
      }
-     if (plugins == 0) {
+-
+-    if (d->loadedPlugins.isEmpty()) {
 -        qCWarning(SONNET_LOG_CORE) << "Sonnet: No speller backends available!";
-     }
+-    }
  #else
  #ifdef Q_OS_MACOS
+     loadPlugin(QString());
