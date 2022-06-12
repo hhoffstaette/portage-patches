@@ -1,17 +1,15 @@
---- sonnet-5.89.0/src/core/loader.cpp	2021-12-04 19:55:29.000000000 +0100
-+++ sonnet-5.89.0-nowarn/src/core/loader.cpp	2021-12-13 01:33:35.532745595 +0100
-@@ -83,10 +83,8 @@ SpellerPlugin *Loader::createSpeller(con
-     auto clientsItr = d->languageClients.constFind(plang);
-     if (clientsItr == d->languageClients.constEnd()) {
-         if (language.isEmpty()) {
--            qCWarning(SONNET_LOG_CORE) << "No language dictionaries for the language:" << plang << "trying to load en_US as default";
+diff -rup sonnet-5.95.0/src/core/loader.cpp sonnet-5.95.0-nowarn/src/core/loader.cpp
+--- sonnet-5.95.0/src/core/loader.cpp	2022-06-09 23:30:12.000000000 +0200
++++ sonnet-5.95.0-nowarn/src/core/loader.cpp	2022-06-12 22:43:07.281084194 +0200
+@@ -87,7 +87,6 @@ SpellerPlugin *Loader::createSpeller(con
+             qCDebug(SONNET_LOG_CORE) << "No language dictionaries for the language:" << plang << "trying to load en_US as default";
              return createSpeller(QStringLiteral("en_US"), clientName);
          }
 -        qCWarning(SONNET_LOG_CORE) << "No language dictionaries for the language:" << plang;
          Q_EMIT loadingDictionaryFailed(plang);
          return nullptr;
      }
-@@ -102,7 +100,6 @@ SpellerPlugin *Loader::createSpeller(con
+@@ -103,7 +102,6 @@ SpellerPlugin *Loader::createSpeller(con
                  return client->name() == backend;
              });
              if (unknown) {
@@ -19,7 +17,7 @@
                  backend = QString();
              }
          }
-@@ -126,7 +123,6 @@ SpellerPlugin *Loader::createSpeller(con
+@@ -127,7 +125,6 @@ SpellerPlugin *Loader::createSpeller(con
          }
      }
  
@@ -27,7 +25,7 @@
      return nullptr;
  }
  
-@@ -281,10 +277,6 @@ void Loader::loadPlugins()
+@@ -282,10 +279,6 @@ void Loader::loadPlugins()
              loadPlugin(dir.absoluteFilePath(fileName));
          }
      }
@@ -38,3 +36,11 @@
  #else
  #ifdef Q_OS_MACOS
      loadPlugin(QString());
+@@ -315,7 +308,6 @@ void Loader::loadPlugin(const QString &p
+ 
+     Client *client = qobject_cast<Client *>(plugin.instance());
+     if (!client) {
+-        qCWarning(SONNET_LOG_CORE) << "Sonnet: Invalid plugin loaded" << pluginPath;
+         plugin.unload(); // don't leave it in memory
+         return;
+     }
