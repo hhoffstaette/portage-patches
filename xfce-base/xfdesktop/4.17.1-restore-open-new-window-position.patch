@@ -29,7 +29,7 @@ This reverts the change made for: https://gitlab.xfce.org/xfce/xfdesktop/-/issue
                      GIcon *icon;
  
                      /* create launcher item */
-@@ -1527,24 +1543,13 @@ xfdesktop_file_icon_manager_populate_con
+@@ -1527,21 +1543,12 @@ xfdesktop_file_icon_manager_populate_con
                          g_signal_connect(G_OBJECT(mi), "activate",
                                           G_CALLBACK(xfdesktop_file_icon_template_item_activated),
                                           fmanager);
@@ -53,11 +53,8 @@ This reverts the change made for: https://gitlab.xfce.org/xfce/xfdesktop/-/issue
 -                gtk_widget_show(mi);
 -                gtk_menu_shell_append(GTK_MENU_SHELL(menu), mi);
              } else {
--                /* Menu on non-folder icons */
--
-                 if(xfdesktop_file_utils_file_is_executable(info)) {
-                     img = gtk_image_new_from_icon_name("system-run", GTK_ICON_SIZE_MENU);
-                     mi = xfdesktop_menu_create_menu_item_with_mnemonic(_("_Execute"), img);
+                 /* Menu on non-folder icons */
+                 GList *app_infos = NULL;
 @@ -1838,14 +1843,6 @@ xfdesktop_file_icon_manager_populate_con
  
          if(file_icon == fmanager->priv->desktop_icon) {
