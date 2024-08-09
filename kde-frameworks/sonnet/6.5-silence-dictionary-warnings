@@ -1,0 +1,37 @@
+diff -rup sonnet-6.5.0/src/core/loader.cpp sonnet-6.5.0-nowarn/src/core/loader.cpp
+--- sonnet-6.5.0/src/core/loader.cpp	2024-08-02 13:16:55.000000000 +0200
++++ sonnet-6.5.0-nowarn/src/core/loader.cpp	2024-08-09 15:57:07.268147768 +0200
+@@ -86,7 +86,6 @@ SpellerPlugin *Loader::createSpeller(con
+             qCDebug(SONNET_LOG_CORE) << "No language dictionaries for the language:" << plang << "trying to load en_US as default";
+             return createSpeller(QStringLiteral("en_US"), clientName);
+         }
+-        qCDebug(SONNET_LOG_CORE) << "No language dictionaries for the language:" << plang;
+         Q_EMIT loadingDictionaryFailed(plang);
+         return nullptr;
+     }
+@@ -102,7 +101,6 @@ SpellerPlugin *Loader::createSpeller(con
+                 return client->name() == backend;
+             });
+             if (unknown) {
+-                qCWarning(SONNET_LOG_CORE) << "Default client" << backend << "doesn't support language:" << plang;
+                 backend = QString();
+             }
+         }
+@@ -126,7 +124,6 @@ SpellerPlugin *Loader::createSpeller(con
+         }
+     }
+ 
+-    qCWarning(SONNET_LOG_CORE) << "The default client" << backend << "has no language dictionaries for the language:" << plang;
+     return nullptr;
+ }
+ 
+@@ -282,9 +279,6 @@ void Loader::loadPlugins()
+         }
+     }
+ 
+-    if (d->loadedPlugins.isEmpty()) {
+-        qCWarning(SONNET_LOG_CORE) << "Sonnet: No speller backends available!";
+-    }
+ #else
+ #ifdef Q_OS_MACOS
+     loadPlugin(QString());
